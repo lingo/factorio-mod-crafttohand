@@ -28,17 +28,6 @@ local function set_crafting_item(item)
   global['craft-to-hand'].craft = item
 end
 
-script.on_event('craft-to-hand', function(event)
-  local player  = game.players[event.player_index]
-  local planner = find_planner(player)
-
-  if planner == nil then
-    player.begin_crafting{count=1, recipe='craft-to-hand'}
-  else
-    player.cursor_stack.swap_stack(planner)
-  end
-end)
-
 script.on_event(defines.events.on_player_crafted_item, function(event)
   local player = game.players[event.player_index]
 
@@ -54,7 +43,7 @@ script.on_event(defines.events.on_player_crafted_item, function(event)
     player.cursor_stack.swap_stack(entity)
     set_crafting_item(nil)
   else
-    player.print("setting global to " .. item)
+    -- player.print("setting global to " .. item)
     set_crafting_item(item)
   end
 end)

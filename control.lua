@@ -1,20 +1,20 @@
 local function find_entity_in_inventory(player, name)
-  local main_inventory = player.get_inventory(defines.inventory.player_main)
-  local quickbar       = player.get_inventory(defines.inventory.player_quickbar)
-  local tools          = player.get_inventory(defines.inventory.player_tools)
-  local entity         = main_inventory.find_item_stack(name)
+  local inventories = {
+    player.get_inventory(defines.inventory.player_main),
+    player.get_inventory(defines.inventory.player_quickbar),
+    player.get_inventory(defines.inventory.player_tools),
+    player.get_quickbar()
+  }
 
-  if entity == nil then
-    entity = quickbar.find_item_stack(name)
+  local entity = nil
+
+  for _,inventory in ipairs(inventories) do
+    entity = inventory.find_item_stack(name)
+    if entity then
+      return entity
+    end
   end
-  if entity == nil then
-    quickbar = player.get_quickbar()
-    entity   = tools.find_item_stack(name)
-  end
-  if entity == nil then
-    entity = quickbar.find_item_stack(name)
-  end
-  return entity
+  return nil
 end
 
 local function init_globals()
